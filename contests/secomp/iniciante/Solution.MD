@@ -199,9 +199,11 @@
         > 
         > Fixando a posicao $b_0$ conforme as posicoes de $b_1$ crescem (em [0, $b_0-1$]), a colocacao na ordem aumenta dentro dos intervalos citados acima. Quando os dois b`s ficam lado a lado, significa que o maior numero de classificacao para uma posicao fixa de $b_0$ foi alcancado.
         >
-        > Assim achamos a posicao de $b_0$ a partir do intervalo de cada posicao e posicionamos $b_1$ gerando uma exata colocacao. Definindo exatamente esses intervalos, quando $b_0$ esta na posicao $i$, podemos descobrir as colocacoes possiveis usando a soma de gaus do seguinte modo
+        > Assim achamos a posicao de $b_0$ a partir do intervalo de cada posicao e posicionamos $b_1$ gerando uma exata colocacao. Definindo exatamente esses intervalos, quando $b_0$ esta na posicao $i$, podemos descobrir o intervalo de colocacoes possiveis usando a soma de gaus do seguinte modo
         >
-        > - $ [ (1+i-1)*(i-1)/2 + 1, (i+1)*i/2] $
+        > - $[ (1+i-1)*(i-1)/2 + 1, (i+1)*i/2] $
+        >
+        > (Observe nos exemplos acima que de fato os intervalos batem)
         >
         > O fim desse intervalo, ou seja, a ultima classificacao que pode ser gerada quando $b_0$ esta em $i$ acaba sendo aprenas a soma da quantidade de strings que puderam ser geradas ate o momento, assim sendo a soma de gaus de 1 ate i
         >
