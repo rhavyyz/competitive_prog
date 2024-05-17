@@ -12,7 +12,7 @@ int operation(int left, int right)
     return left ^ right;
 }
 
-int tree[2*N], values[N];
+int tree[2*N], values_seg[N];
 
 int query(int node, int l, int r, int begin, int end)
 {
@@ -49,7 +49,7 @@ int build(int node, int l, int r)
 {
     if(l > r) return irrelevant;
     if(l == r)
-        return tree[node] = values[l];
+        return tree[node] = values_seg[l];
     int mid = (l+r)/2;
     
     return tree[node] = operation(
@@ -66,7 +66,7 @@ signed main()
 
     for(int i =0; i < n; i++)
     {
-        cin >> values[i];
+        cin >> values_seg[i];
     }
 
     build(0, 0, n-1);

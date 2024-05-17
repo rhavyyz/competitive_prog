@@ -11,8 +11,8 @@ int solve()
     int n; cin >> n;
 
     int clock = 0;
-    int flag = false;
 
+    // memset(msg, -1,sizeof(msg));
 
     while(n--)
     {
@@ -20,27 +20,25 @@ int solve()
 
         if(op == 'T')
         {
-            clock += val;
-            continue;
-            flag = false;
-        
+            clock += val - 1;
+            continue; 
         }  
-        if(flag)
-            clock++;
-        else
-            flag = true;
-
+        clock++;
+       
         if(op == 'R')
             msg[val] = clock;
         else if(op == 'E')
+        {
             tot_dif[val] += clock - msg[val];
+            msg[val] = -1;
+        }
 
     }
 
     for(int i = 1; i < 101; i++)
     {
         if(tot_dif[i] != 0)
-            cout << i << ' ' << tot_dif[i] << endl;
+            cout << i << ' ' << (msg[i] == -1 ? tot_dif[i] : -1) << endl;
     }
 
     return 0;
@@ -48,6 +46,8 @@ int solve()
 
 signed main()
 {
+
+    ios_base::sync_with_stdio(false); cin.tie(0);
 
     solve();
 

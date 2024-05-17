@@ -24,7 +24,7 @@ void fill_primes(int n = MAX_N)
 
 }
 
-
+// O(log(log n))
 void optimal_fill_primes(int n = MAX_N)
 {
 

@@ -3,14 +3,15 @@
 
 using namespace std;
 
+/*
 
-// template<class T>
-// void swap(T a, T b)
-// {
-//     T aux = a;
-//     a = b;
-//     b = aux;
-// }
+It stated that gcd(a, b) = gcd(b, a%b), and that 
+
+gcd(a, 0) = a
+
+So there is a recursive way to find gcd(a, b) in O(log n)
+
+*/
 
 int gcd(int a, int b)
 {

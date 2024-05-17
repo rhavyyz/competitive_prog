@@ -1,72 +1,56 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> //required
+#include <ext/pb_ds/tree_policy.hpp> //required
 
-#define int unsigned int
-#define all(A) A.begin(), A.end()
-
+using namespace __gnu_pbds; //required 
 using namespace std;
+ 
+template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; 
 
+#define int long long 
+#define IOS ios_base::sync_with_stdio(false); cin.tie(false); cout.tie(false); 
+#define endl '\n'
+#define bug(x)  cerr << #x << " >>> " << x << endl;
+#define all(A) 
 
-int solve()
+pair<int , int> values[2 * (int)1e6];
+
+void solve()
 {
-	map<int, int> values;
+
+    int n; cin >> n;
+
+    for(int i = 0; i < n; i++)
+        cin >> values[i].first >> values[i].second;
+
+    sort(values, values+n);
+
+    ordered_set<int> ds;
+
+    int tot = 0;
+
+    for(int i = n-1; i >= 0; i--)
+    {
+        if(!ds.empty())
+            tot += ds.order_of_key(values[i].second);
 
 
-	int a = 1;
+        ds.insert(values[i].second);
+    }
 
-	int last_b = (a << 31);
+    cout << tot << endl;
 
-	int n; cin >> n;
-	int res = n;
-	for(int i =0; i < n; i++)
-	{
-		int aux; cin >> aux;
-		int comple = ~aux;
-
-		auto regular = values.find(comple),
-			 plus = values.find(comple + last_b),
-			 minus = values.find(comple - last_b);
-
-		if(regular != values.end() && (*regular).second > 0&& comple != aux)
-		{
-			res--;
-			(*regular).second--;
-		}
-		else if(aux>=last_b && plus != values.end() && (*plus).second > 0 && comple + last_b != aux)
-		{
-			res--;
-			(*plus).second--;
-		}
-		else if(aux <last_b && minus != values.end() && (*minus).second > 0 && comple - last_b != aux)
-		{
-			res--;
-			(*minus).second--;
-		}
-		
-		if(values.find(aux) != values.end())
-			values[aux]++;
-		else
-			values[aux] = 1;
-	}
-
-	if(res < n/2)
-	{
-		if(n%2)
-			res = n/2 + 1;
-		else
-			res = n/2;
-	}
-
-	return res;
 }
-
+ 
 signed main()
 {
-	int t; cin >> t;
+    int t = 1;
+    cin >> t;
 
-	while(t--)
-		cout << solve() << endl;
-	
-
-
-	return 0;
-} 
+    while(t--)
+    {
+        solve();
+    } 
+    
+    return 0;
+}

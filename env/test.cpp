@@ -1,14 +1,32 @@
 #include <bits/stdc++.h>
-
+ 
 using namespace std;
+ 
+// #define int long long
 
-int main()
+int solve()
+{  
+    int n; cin >> n;
+
+    set<int> s;
+    while(n--)
+    {
+        int aux; cin >> aux;
+        s.insert(aux);
+    }
+
+    cout << s.size() << endl;
+}
+
+signed main()
 {
 
-    vector<string> v = {"aab", "aa"};
+    int t = 1; 
+    // cin >> t;
 
-    sort(v.begin(),v.end());
-    cout << (v[0][2] == '\0') << endl;
+    while(t--)
+        solve();
 
+    
     return 0;
-}
+}   
