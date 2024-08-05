@@ -58,5 +58,5 @@ int log_floor(int x) {
     return __bit_width(x) - 1;
 
     // pre c++ 20
-    return i ? __builtin_clzll(1) - __builtin_clzll(i) : -1;    
+    return x ? __builtin_clzll(1) - __builtin_clzll(x) : -1;    
 }

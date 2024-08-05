@@ -1,58 +1,42 @@
-// https://codeforces.com/contest/1969/problem/C
-
 #include <bits/stdc++.h>
-
 using namespace std;
 
-int n, k;
-int values[(int)1e6];
 
-int memo[(int)1e6][11];
+string t1, t2;
+int memo[1001][1001];
+int n, m;
 
-const int INF = 1e9;
-
-void dp()
+int dp(int i, int j)
 {
+    if(i >= n || j >= m)
+        return 0;
+    if(memo[i][j]!= -1)
+        return memo[i][j];
+    int poss = -1;
+    if(t1[i] == t2[j])
+        poss= max(poss, 1 + dp(i+1, j+1));
+    else
+    {
+        poss= max(poss, dp(i+1, j));
+        poss= max(poss, dp(i, j+1));
+    }
+
+    return memo[i][j] = poss;
+}
+
+int main()
+{
+    cin >> t1 >> t2;
+    n = t1.size();
+    m = t2.size();
+
     for(int i = 0; i < n; i++)
-    {
-        int minimum = INF;
-        for(int x=0; x <= k && i-x >= 0; x++)
-        {
-            memo[i][x] = INF;
-            minimum = min(minimum, values[i-x]);
-            memo[i][x] = min(memo[i][x], memo[i-x][k-x]+ (x+1)*minimum );
-        }
-    }
+        for(int j = 0; j < m; j++)
+            memo[i][j] = -1;
 
-    int minimun = INF;
-    for(int x=0; x <= k; x++)
-    {
-        minimun = min(minimun, memo[n-1][x]);
-    }
+    int aux = dp(0,0);
 
-    cout << minimun << endl;
-
-}
-
-void solve()
-{
-    cin >> n >> k;
-
-    for(int i=0; i < n; i++)
-        cin >> values[i];
-
-    dp();
-
-}
-
-signed main()
-{
-    
-    int t = 1;
-    cin >> t;
-
-    while(t--)
-        solve();
+    cout << aux << endl;
 
     return 0;
 }

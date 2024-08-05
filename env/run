@@ -1,1 +1,1 @@
-g++ $1 && ./a.out < input.txt > output.txt
+g++ $2 $1 && ./a.out < input.txt > output.txt
