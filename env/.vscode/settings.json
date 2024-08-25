@@ -32,6 +32,7 @@
         "latch": "cpp",
         "limits": "cpp",
         "semaphore": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "stdexcept": "cpp"
     }
 }

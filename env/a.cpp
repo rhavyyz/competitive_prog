@@ -1,101 +1,52 @@
-#include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp> //required
-#include <ext/pb_ds/tree_policy.hpp> //required
-
-using namespace __gnu_pbds; //required 
+#include <iostream>
+#include <string>
+#include <set>
 using namespace std;
- 
-template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; 
 
-#define int long long 
-#define IOS ios_base::sync_with_stdio(false); cin.tie(false); cout.tie(false); 
-#define endl '\n'
-#define bug(x)  cerr << #x << " >>> " << x << endl;
-#define all(A) A.begin(), A.end()
+void WordSplit() {
+  
+    string strArr[]= {"", ""};
+     int arrLength;
+    cin >> strArr[0];
+    cin >> strArr[1];
 
-struct state
-{
-    int rest_time, switched_time;
-    bool on;
-};
+  string & alphabeth = strArr[1];
+  string & word = strArr[0];
 
+  set<string> dict;
 
-int solve()
-{
-
-    int n, k; cin >> n >> k;
-
-    vector<int> values(k, -1);
-
-    bool ok = true;
-
-    int maior = -1;
-
-    for(int i = 0; i < n; i++)
+  int last = 0;
+  for(int i =0 ; i < alphabeth.size(); i++)
+  {
+    if(alphabeth[i] == ',')
     {
-        int aux; cin >> aux;
-        int mod = aux % k;
-
-
-
-        if(values[mod] ==  -1)
-            values[mod] = aux;
-        else if((values[mod]/k)%2 == (aux/k) % 2) 
-            values[mod] = max(aux, values[mod]);
-        else
-            ok = false;
-        maior = max(maior, values[mod]);
-    }   
-
-    if(!ok)
-        return cout << -1 << endl, 0;
-
-    set<int> s;
-    for(int &value : values)
-    {
-        if(value == maior || value == -1)
-            continue;
-        
-        //  cout << value << ' ' << ref << ' ';
-        value += ((maior - value)/(2*k)) * (k*2);
-
-        s.insert(value);
+      dict.insert(alphabeth.substr(last, i- last));
+      last=i+1;
     }
+  }
 
-    int ref = maior + k*4;
+  string front_str="";
 
-    while(true)
+  while(word.size())
+  {
+    if(dict.count(front_str) && dict.count(word))
     {
-        int menor = *s.begin();
-        if(menor + k >= maior)
-            return cout << maior << endl, 0;
-        
-        s.erase(menor);
-
-        s.insert(menor + 2* k);
-
-        maior = max(menor + 2*k  , maior);
-
-        if(menor + 2* k == ref)
-            break;
+      word = front_str + "," + word;
+      break;
     }
+    front_str += word[0];
+    word.erase(0, 1);
+  }
 
-    cout << -1 << endl;
 
-    return 0;
+  // code goes here  
+cout << strArr[0] << endl;
+
 }
 
-signed main()
-{
-    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    int t = 1;
-    cin >> t;    
-
-    while(t--)
-    {
-        solve();
-    } 
-    
+int main(void) { 
+    WordSplit();
 
     return 0;
+
 }
