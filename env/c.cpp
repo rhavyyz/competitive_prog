@@ -11,40 +11,183 @@ template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_t
 #define IOS ios_base::sync_with_stdio(false); cin.tie(false); cout.tie(false); 
 #define endl '\n'
 #define bug(x)  cerr << #x << " >>> " << x << endl;
-#define all(A) 
+#define all(A) A.begin(), A.end()
 
-int solve(){
-    int n, a, b; cin >> n >> a >> b;
-    
-    int n_b = b-a + 1;
+int n, m; 
+int mat[201][201];
+int visited[201][201];
 
-    // cout << n_b << ' ';
+bool check(int i, int j)
+{
+    return i>=0 && i < n && j >= 0 && j < m;
+}
 
-    if(n_b < 0)
-        return cout << n * a << endl, 0;
+struct Node
+{
+    int color;
+    int size;
+    set<int> near;
+};
 
+vector<Node> graph;
+vector<set<int>> tested_colors;
 
-    if(n_b > n)
+vector<pair<int, int>> moves = {
+    {1, 0},
+    {0, 1},
+    {-1, 0},
+    {0, -1},
+};
+
+int size_with(int i,int color, int parent)
+{
+    if(i >= graph.size() && i <0)
+        return 0;
+
+    int tot = graph[i].size;
+    if(graph[i].color != 0 && graph[i].color != color)
     {
-        n_b = n;
-        a = b-n+1;
+        return 0;
     }
 
+    if(graph[i].color == 0)
+    {
+        if(tested_colors[i].count(color) )
+            return n*m*10;
+        tested_colors[i].insert(color);
+    }
 
-    int tot_b = (b + a)* n_b / 2;
-    // cout <<  (b + a)* n_b / 2 << ' ';
+    for(int next : graph[i].near)
+    {
+        if(next != parent)
+            tot+= size_with(next, color, i); 
+    }
 
-    cout << tot_b + (n-n_b) * a << endl;
+    return tot;
+
+}
+int get_min_from(int i)
+{
+    int res = n*m*10;
+    for(int color = 1; color <=40000; color++)
+    {
+        res = min(size_with(i, color, i), res);
+        if(res == graph[i].size)
+            break;
+    }
+    return res;
+}
+
+Node dfs(int i, int j, int color, int id)
+{
+
+    if(!check(i, j))
+        return {color, 0, {}};
+
+    if(color != mat[i][j] || visited[i][j] != -1)
+        return {color, 0, {visited[i][j]}};
+    
+    visited[i][j] = id;
+    int qtd = 1;
+
+    set<int> near;
+
+    for(auto [y, x] : moves)
+    {
+        auto aux = dfs(i+y, x+j, color, id);
+        qtd+=aux.size;
+
+        if(color == 0)
+        {
+            for (auto next : aux.near)
+            {
+                if(next!= id)
+                    near.insert(next);
+            }
+        }
+    }
+
+    return {color, qtd, near};
+}
 
 
-    return 1;
+
+int solve(){
+    
+
+    
+    cin >> n >> m;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j  < m; j++)
+        {
+            cin >> mat[i][j];
+            visited[i][j] = -1;
+        }
+    }
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j  < m; j++)
+        {
+            if(visited[i][j] == -1 && mat[i][j] != 0)
+            {
+                graph.push_back(dfs(i, j, mat[i][j], graph.size()));
+                for(int e : graph.back().near)
+                {
+                    graph[e].near.insert(graph.size()-1);
+                }
+            }
+        }
+    }
+
+    int colored_ones = graph.size();
+
+
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j  < m; j++)
+        {
+            if(visited[i][j] == -1 && mat[i][j] == 0)
+            {
+                graph.push_back(dfs(i, j, mat[i][j], graph.size()));
+                for(int e : graph.back().near)
+                {
+                    graph[e].near.insert(graph.size()-1);
+                }
+            }
+        }
+    }
+
+    int min_colored = m*n +1000;
+
+    for(int i = 0; i < colored_ones; i++)
+        min_colored=min(graph[i].size, min_colored);
+    int min_spaces = m*n +1000;
+    for(int i = colored_ones; i < graph.size(); i++)
+        min_spaces=min(graph[i].size, min_spaces);
+
+    if(min_colored <= min_spaces)
+        return cout << min_colored << endl , 0;
+
+
+    int actual_min_spaces = m*n +1000;
+
+    tested_colors.resize(graph.size());
+
+    for(int i = colored_ones; i < graph.size(); i++)
+        actual_min_spaces=get_min_from(i);
+
+    cout << min(actual_min_spaces, min_colored) << endl;
+
+    return 0;
 }
  
 signed main()
 {
-    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+    // ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
     int t = 1;
-    cin >> t;    
+    // cin >> t;    
 
     while(t--)
         solve();
