@@ -13,83 +13,48 @@ template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_t
 #define bug(x)  cerr << #x << " >>> " << x << endl;
 #define all(A) A.begin(), A.end()
 
-struct state
+// int n;
+const int INF = 1e17;
+
+int vals[6];
+
+int possible = false;
+
+void solve()
 {
-    int rest_time, switched_time;
-    bool on;
-};
+    for(int i = 0; i < 6; i++)
+        cin >> vals[i];
+    sort(vals, vals+6);
 
+    int t1 = vals[5];
+    int t2 = vals[3] + vals[4];
+    int t3 = vals[0] + vals[1] + vals[2];
 
-int solve()
-{
+    bool ok = false;
 
-    int n, k; cin >> n >> k;
+    if(t1 == t2 && t2 == t3) ok = true;
 
-    vector<int> values(k, -1);
-
-    bool ok = true;
-
-    int maior = -1;
-
-    for(int i = 0; i < n; i++)
+    while(next_permutation(vals, vals+6))
     {
-        int aux; cin >> aux;
-        int mod = aux % k;
-
-
-
-        if(values[mod] ==  -1)
-            values[mod] = aux;
-        else if((values[mod]/k)%2 == (aux/k) % 2) 
-            values[mod] = max(aux, values[mod]);
-        else
-            ok = false;
-        maior = max(maior, values[mod]);
-    }   
-
-    if(!ok)
-        return cout << -1 << endl, 0;
-
-    set<int> s;
-    for(int &value : values)
-    {
-        if(value == maior || value == -1)
-            continue;
-        
-        //  cout << value << ' ' << ref << ' ';
-        value += ((maior - value)/(2*k)) * (k*2);
-
-        s.insert(value);
+        t1 = vals[5];
+        t2 = vals[3] + vals[4];
+        t3 = vals[0] + vals[1] + vals[2];
+        if(t1 == t2 && t2 == t3) ok = true;
     }
 
-    int ref = maior + k*4;
+    if(ok)
+        cout << 'S' << endl;
+    else
+        cout << 'N' << endl;
 
-    while(true)
-    {
-        int menor = *s.begin();
-        if(menor + k >= maior)
-            return cout << maior << endl, 0;
-        
-        s.erase(menor);
 
-        s.insert(menor + 2* k);
-
-        maior = max(menor + 2*k  , maior);
-
-        if(menor + 2* k == ref)
-            break;
-    }
-
-    cout << -1 << endl;
-
-    return 0;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
     int t = 1;
-    cin >> t;    
+    // cin >> t;    
 
     while(t--)
     {

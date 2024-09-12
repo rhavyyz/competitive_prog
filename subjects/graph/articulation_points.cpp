@@ -8,7 +8,7 @@ typedef pair<int, int> edge_type;
 graph_type g;
 
 vector<int> low, tin, visited;
-vector<edge_type> bridges;
+vector<int> cut_edges;
 
 int cont = 0;
 
@@ -17,6 +17,7 @@ void dfs(int v, int p = -1)
     low[v] = tin[v] = cont++;
     visited[v] = 1;
 
+    int children_qtd = 0;
     for(int to : g[v])
     {
         if(to == p)
@@ -33,16 +34,21 @@ void dfs(int v, int p = -1)
         // If regular edge
         else
         {
+            children_qtd++;
             dfs(to, v);
 
             // low is going to be the lowest between the current vertex and its children
             low[v] = min(low[v], low[to]);
-            if(low[to] > tin[v])
-                bridges.push_back({v, to});
+            if(low[to] >= tin[v] && p != -1)
+                cut_edges.push_back(v);
         }
 
 
     }
+
+    if(p == -1 && children_qtd > 1)
+        cut_edges.push_back(v);
+
 }
 
 int find_briges()
@@ -50,8 +56,7 @@ int find_briges()
     visited.assign(g.size(), 0);
     tin.resize(g.size());
     low.resize(g.size());
-    bridges.clear();
-
+    cut_edges.clear();
 
     for(int i =1; i <g.size(); i++)
     {
@@ -61,7 +66,6 @@ int find_briges()
 
 
     return 0;
-
 }
 
 int main()

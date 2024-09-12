@@ -5,7 +5,7 @@
     There is a distance metric called chebyschev distance, that dissociates the coordinates of points
     while calculating the distance. 
 
-        D chebyschev (x, w) = max(|xi - yi|)
+        D chebyschev (x, w) = max(|cord_i_x - cord_i_w|)
 
     so there is a way to make the manhattan distance = chebyscev distance.
 

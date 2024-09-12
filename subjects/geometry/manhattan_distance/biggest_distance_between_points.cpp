@@ -7,14 +7,15 @@ using namespace std;
 
 /*
 
-    The whole concept of this runs over the extrapolation of the idea to many dimensions
+    The whole concept of this runs over the extrapolation of this idea to many dimensions
 
     Considering we just have the x cordinate, to maximize the distance between to points, 
-    we need to find the biggest
+    we need to find the largest and the smallest
 
     |p.x - q.x| = max(p.x - q.x, -p.x + q.x) 
 
-    For better comprehension lets always consider p.x-q.x as positive. So we can do
+    For better comprehension lets always consider p.x-q.x as positive therefore 
+    max(p.x - q.x, -p.x + q.x) = p.x - q.x. So we can do
 
     max(p.x + (-q.x)) = max(p.x) + max(-q.x) 
     
@@ -61,16 +62,11 @@ int solve()
             // Iterate over all cordinates of a point and making sum/sub operations
             // acourding to the bitmask
             for (int j = 0; j < d; j++) {
-                cout << msk << ' ' << (1 << j) << endl;
+                std::cout << msk << ' ' << (1 << j) << endl;
                 if (msk & (1 << j)) 
-                {
                     cur += p[i][j];
-                }
                 else
-                {
                     cur -= p[i][j];
-
-                } 
             }
             mx = max(mx, cur);
             mn = min(mn, cur);
@@ -78,7 +74,7 @@ int solve()
         ans = max(ans, mx - mn);
     }
 
-    cout << ans << endl;
+    std::cout << ans << endl;
     return 0;
 }
 
