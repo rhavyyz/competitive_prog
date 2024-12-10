@@ -1,9 +1,7 @@
-#include <iostream>
-#include <string>
-#include <set>
+#include <bits/stdc++.h>
 using namespace std;
  
-template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; 
+// template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; 
 
 #define int long long 
 #define IOS ios_base::sync_with_stdio(false); cin.tie(false); cout.tie(false); 
@@ -14,38 +12,46 @@ template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_t
 // int n;
 const int INF = 1e17;
 
-int vals[6];
+long long maximumSubarraySum(vector<int> nums, int k) {
+    int sum = 0;
+    int curr_sum = 0;
 
-int possible = false;
+    map<int, int> el;
 
-void solve()
-{
-    for(int i = 0; i < 6; i++)
-        cin >> vals[i];
-    sort(vals, vals+6);
-
-    int t1 = vals[5];
-    int t2 = vals[3] + vals[4];
-    int t3 = vals[0] + vals[1] + vals[2];
-
-    bool ok = false;
-
-    if(t1 == t2 && t2 == t3) ok = true;
-
-    while(next_permutation(vals, vals+6))
+    for(int i = 0; i < k; i++)   
     {
-        t1 = vals[5];
-        t2 = vals[3] + vals[4];
-        t3 = vals[0] + vals[1] + vals[2];
-        if(t1 == t2 && t2 == t3) ok = true;
+        curr_sum += nums[i];
+        el[nums[i]]++;;
+    }
+    if(el.size() == k)
+        sum = max(sum, curr_sum);
+
+    for(int i = k; i< nums.size(); i++)
+    {
+        curr_sum -= nums[i-k];
+        el[nums[i-k]]--;
+        if(el[nums[i-k]] == 0)
+        {
+            el.erase(el.find(nums[i-k]));
+        }
+        
+        el[nums[i]]++;
+        curr_sum += nums[i];
+        if(el.size() == k)
+            sum = max(sum, curr_sum);
+
     }
 
-    if(ok)
-        cout << 'S' << endl;
-    else
-        cout << 'N' << endl;
+    return sum;
+}
+
+int solve()
+{
 
 
+    cout <<maximumSubarraySum({1,5,4,2,9,9,9}, 3) << endl;
+
+    return 0;
 }
 
 signed main()
