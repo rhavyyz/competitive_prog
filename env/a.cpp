@@ -1,71 +1,51 @@
 #include <bits/stdc++.h>
-using namespace std;
- 
-// template <typename T> using ordered_set =  tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; 
 
-#define int long long 
-#define IOS ios_base::sync_with_stdio(false); cin.tie(false); cout.tie(false); 
-#define endl '\n'
-#define bug(x)  cerr << #x << " >>> " << x << endl;
+using namespace std;
+
+#define int long long
+#define map unordered_map
 #define all(A) A.begin(), A.end()
 
-// int n;
-const int INF = 1e17;
-
-long long maximumSubarraySum(vector<int> nums, int k) {
-    int sum = 0;
-    int curr_sum = 0;
-
-    map<int, int> el;
-
-    for(int i = 0; i < k; i++)   
-    {
-        curr_sum += nums[i];
-        el[nums[i]]++;;
-    }
-    if(el.size() == k)
-        sum = max(sum, curr_sum);
-
-    for(int i = k; i< nums.size(); i++)
-    {
-        curr_sum -= nums[i-k];
-        el[nums[i-k]]--;
-        if(el[nums[i-k]] == 0)
-        {
-            el.erase(el.find(nums[i-k]));
-        }
-        
-        el[nums[i]]++;
-        curr_sum += nums[i];
-        if(el.size() == k)
-            sum = max(sum, curr_sum);
-
-    }
-
-    return sum;
-}
+#define bug(x) cout << #x << ' ' << x << endl
 
 int solve()
 {
+    int n, m, k;
 
+    cin >> n >> m >> k;
 
-    cout <<maximumSubarraySum({1,5,4,2,9,9,9}, 3) << endl;
+    int l= 1, r = m+1;
 
-    return 0;
+    while(l < r)
+    {
+        int mid = (l+r)/2;
+
+        int tot = (m/ (mid+1) * mid) + m % (mid+1);
+        if(tot * n  >= k )
+            r = mid - 1;
+        else
+            l = mid + 1;
+    }
+    
+    
+    if(((m/ (l+1) * l) + m % (l+1)) * n  >= k )
+        l--;
+
+    while(((m/ (l+1) * l) + m % (l+1)) * n < k)
+        l++;
+
+    cout << l << endl;
+
+    return 1;
 }
 
 signed main()
 {
-    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+
     int t = 1;
-    // cin >> t;    
-
+    cin >> t;
     while(t--)
-    {
         solve();
-    } 
-    
 
-    return 0;
-
+    // cout << gate(2, '*').operate(1) << endl;
 }
