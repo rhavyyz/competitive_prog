@@ -36,7 +36,7 @@ struct StringHash {
         }
     }
  
-    StringHash(string &_s) : n((int)_s.size()), s(_s) {
+    StringHash(const string &_s) : n((int)_s.size()), s(_s) {
         h.resize(n);
         pot.resize(n);
         build_hash();
@@ -45,9 +45,14 @@ struct StringHash {
 signed main()
 {
 
-    string s1, s2; cin >> s1 >> s2;
+    // string s1, s2; cin >> s1 >> s2;
 
-    cout << (StringHash(s1)(0, s1.size()-1) == StringHash(s2)(0, s2.size()-1) ? "Equal" : "Differet") << endl;
+    // cout << (StringHash(s1)(0, s1.size()-1) == StringHash(s2)(0, s2.size()-1) ? "Equal" : "Differet") << endl;
+
+
+    StringHash a("aaa");
+
+    cout << a.mod << endl;
 
 
     return 0;
